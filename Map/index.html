@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Anonymous Community Map</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/relativeTime.js"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#fff;
+color:#111;
+}
+
+#map{
+height:70vh;
+width:100%;
+}
+
+.controls{
+padding:10px;
+background:#e8e8e8;
+}
+
+button{
+background:#005a87;
+color:white;
+border:none;
+padding:8px 14px;
+margin:4px;
+border-radius:4px;
+cursor:pointer;
+}
+
+button:hover{
+background:#004466;
+}
+
+input{
+padding:6px;
+border-radius:4px;
+border:2px solid #555;
+}
+
+#login-screen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:white;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+.hidden{
+display:none;
+}
+
+#recentReports{
+background:#f5f5f5;
+padding:10px;
+font-size:14px;
+}
+
+.reportItem{
+padding:4px;
+border-bottom:1px solid #ddd;
+cursor:pointer;
+}
+
+.reportItem:hover{
+background:#e6e6e6;
+}
+
+#dispatcherPanel{
+background:#fff4e6;
+padding:8px;
+border-top:2px solid #ccc;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="login-screen">
+<h3>Secure Access</h3>
+<input type="password" id="accessCodeInput" placeholder="Access code"/>
+<button onclick="checkAccess()">Enter</button>
+<div id="login-error"></div>
+</div>
+
+<div id="main-app" class="hidden">
+
+<div class="controls">
+
+<h3>Anonymous Community Map</h3>
+
+<input id="searchInput" placeholder="Search address or intersection"/>
+
+<button onclick="searchLocation()">Search</button>
+
+<button onclick="toggleDropMode()">Drop Pin</button>
+
+<button onclick="toggleHeatmap()">Heatmap</button>
+
+<button onclick="toggleLayer()">Change Map Layer</button>
+
+<button onclick="toggleLowData()">Low Data Mode</button>
+
+<button onclick="logout()" style="background:#b30000">Logout</button>
+
+<div id="status">Ready</div>
+
+</div>
+
+<div id="map"></div>
+
+<div id="recentReports">
+<strong>Recent Reports</strong>
+<div id="recentList"></div>
+</div>
+
+<div id="dispatcherPanel" class="hidden">
+
+<strong>Dispatcher Tools</strong>
+
+<button onclick="setPinStatus('Under Verification')">Verifying</button>
+<button onclick="setPinStatus('Confirmed')">Confirmed</button>
+<button onclick="setPinStatus('Resolved')">Resolved</button>
+
+</div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="app.js"></script>
+
+</body>
+</html>
