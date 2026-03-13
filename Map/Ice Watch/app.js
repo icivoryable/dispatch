@@ -396,3 +396,70 @@ exec("python3 -m http.server 8000")
 setTimeout(()=>{
 exec("open http://localhost:8000")
 },1000)
+
+
+function updateRecent(pins){
+
+const list = document.getElementById("recent")
+
+list.innerHTML = ""
+
+pins
+.sort((a,b)=>b.timestamp-a.timestamp)
+.slice(0,5)
+.forEach(p=>{
+
+const li = document.createElement("li")
+
+const minutes = Math.floor((Date.now()-p.timestamp)/60000)
+
+li.innerText = `${minutes} min ago – ${p.location}`
+
+list.appendChild(li)
+
+})
+
+}
+
+async function loadPins(){
+
+const res = await fetch("/api/pins")
+
+const data = await res.json()
+
+renderPins(data.pins)
+
+updateRecent(data.pins)
+
+}
+
+setInterval(loadPins, 60000)
+
+async function submitPin(report){
+
+await fetch("/api/pins",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"dispatcher-token":"YOUR_SECRET"
+},
+
+body:JSON.stringify(report)
+
+})
+
+}
+
+submitPin({
+
+lat: 33.7490,
+lng: -84.3880,
+
+count:3,
+equipment:"truck",
+actions:"blocking intersection",
+location:"Peachtree St"
+
+})
